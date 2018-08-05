@@ -247,62 +247,58 @@
 * 轉職
 
   最後要來介紹如何跟伺服器端做溝通，這在多人開發時很常用到。
-  基本上用 git clone 的方式建立倉庫，對於伺服器端的設定就被處理好了。
-  可以用 git status 來查看。
-  下面是我另外一個倉庫 git status 的資訊
+  基本上用 clone existing repository 的方式建立倉庫，對於伺服器端的設定就被處理好了。
+  可以從 remote 來查看
   
-  #+BEGIN_EXAMPLE
-  On branch master
-  Your branch is up to date with 'github/master'.
+  如果有設定好伺服器端
 
-  nothing to commit, working tree clean
-  #+END_EXAMPLE
+  #+ATTR_HTML: :width 60%
+  [[./images/gitMenuRemote.png]]
 
-  可以從第二行看到這個分支連接到了 github/master 的伺服器端分支。
-  如果類似這種訊息，就可以確定伺服器端的設定 ok 了。
-  這時候就可以用 git pull 來將伺服器端分支合併到本地端分支，而 git push 則能將本地端分支合併到伺服器端分支。
-  要注意的是，如果伺服器端分支的版本跟本地端分支有衝突時，必須先 git pull 拉下來解決衝突後才可以 git push 給伺服器端。
-  如果只想要同步一下伺服器端資料而不想合併到本地端的分支的話，可以用 git fetch。
-  git pull 基本上等於 git fetch + git merge。
+  如果沒設定好伺服器端
+
+  #+ATTR_HTML: :width 60%
+  [[./images/gitMenuRemoteNo.png]]
+
+  要同步一下伺服器端資料時就選擇 remote 的 fetch from
   
+  這時候就可以用 merge local merge 中的 tracking branch 來將伺服器端分支合併到本地端分支
+
+  #+ATTR_HTML: :width 60%
+  [[./images/gitMergeRemote.png]]
+
+  而 remote 的 push 則能將本地端分支合併到伺服器端分支
+  
+  #+ATTR_HTML: :width 60%
+  [[./images/gitMenuPush.png]]
+
+  #+ATTR_HTML: :width 60%
+  [[./images/gitPush.png]]
+
   再來講講如果沒有設定好連結的伺服器端要如何處理。
-  最簡單是每次 git push 跟 git pull 都指定伺服器端網址與分支，像是
+  最簡單是每次 push 都指定伺服器端網址與分支，在 arbitrary location 輸入伺服器位置即可
 
-  #+BEGIN_EXAMPLE
-  git pull https://github.com/git/git.git master
-  #+END_EXAMPLE
+  #+ATTR_HTML: :width 60%
+  [[./images/gitPushNoRemote.png]]
 
-  可是每次這樣太累了，我們可以用 git remote 紀錄伺服器端的位置
+  可是每次這樣太累了，我們可以用 remote 的 add 紀錄伺服器端的位置
 
-  #+BEGIN_EXAMPLE
-  git remote add github https://github.com/git/git.git
-  #+END_EXAMPLE
-  
-  上面指令會用 github 紀錄 https://github.com/git/git.git 的位置，所以用
+  #+ATTR_HTML: :width 60%
+  [[./images/gitMenuRemoteAdd.png]]
 
-  #+BEGIN_EXAMPLE
-  git pull github master
-  #+END_EXAMPLE
+  #+ATTR_HTML: :width 60%
+  [[./images/gitRemoteAdd.png]]
 
-  來取代剛剛的 pull 指令。至於要直接讓本地端分支連結到伺服器端分支，要使用
+  上面輸入的資料指令會用 github 紀錄 https://github.com/git/git.git 的位置
 
-  #+BEGIN_EXAMPLE
-  git branch --set-upstream-to=github master
-  #+END_EXAMPLE
+  可以看到現在可以 fetch github 了
 
-  來將現在的分支連結到 github 的 master 分支。這樣之後的 git pull 跟 git push 對象預設就會是 github 的 master 分支。
-  另外就是，用 git remote -v 可以看到遠端伺服器的設定。
-  而 git branch -vv 可以看到每個本地分支的詳細設定( 包括連結到的遠端分支 )
-  簡單整理用到的指令
-
-  - git pull 從伺服端拉取資料並合併
-  - git fetch 從伺服端拉取資料
-  - git push 將資料推到伺服端
-  - git remote 管理遠端設定
+  #+ATTR_HTML: :width 60%
+  [[./images/gitNewRemote.png]]
 
 * 結語
 
-  以上就是我對 git 的簡單介紹，希望看這篇文章的人能對 git 有個簡單的認識與學會基本的使用。
+  以上就是我對 git gui 的簡單介紹，希望看這篇文章的人能對 git 有個簡單的認識與學會 gui 基本的使用。
   我會將這篇文章轉成 pdf 放在 [[https://github.com/flotisable/Articles][github]] 供想看的人離線觀看。
   如果想看更詳細的介紹，git 官網有別人寫的[[https://git-scm.com/book/zh-tw/v1][免費電子書]]，而且有中文版本。
   我基本上也是看那本書學的。
@@ -310,9 +306,8 @@
   
 -----
 
-之前在學弟提到還有跟實驗室同學介紹時就有在思考要怎麼寫這篇了。
-結果拖了一兩個星期才生出來。
-還有 vim 的介紹要寫呢。
-但現在有點多事，而且又動力不足，只能慢慢找時間做了
+感覺內建的 gui 功能有些限制，不過簡單的操作應該不是問題。
+如果要複雜的操作可能就得找一下其他的 gui，或是直接回歸原本使用指令介面了。
+從這篇文章後 pdf 檔應該不會用 odt 轉了，而是用 latex 的 backend，這樣應該比較好看。
 
 -----
