@@ -151,12 +151,21 @@
    尤其是變數被大量使用時影響會比較大。
    不過 === 應該也有適用的地方，
    但我就不熟悉了。
-   使用變數的方式也有兩種方式，
+   使用變數的方式主要也有兩種方式，
    一個是用 =$(= =)= 來包住變數，
    一個是用 =${= =}= 來包住變數。
    而這兩種方式基本上沒差。
    我個人習慣用 =${= =}= ，
-   主要是可以跟後面介紹的函示作區別。
+   主要是可以跟後面介紹的函式作區別。
+   其實直接在變數名稱前加 =$= 就可以用使用變數了，
+   但如果變數名稱後面直接接著文字時會有問題。
+   我個人是習慣統一用一種方式。
+
+   #+BEGIN_SRC makefile
+     abc       := abc
+     variable1 := $abcdef   # variable1 為空字串( 因為 ${abcdef} 未設定，預設為空字串 )
+     variable2 := ${abc}def # variable2 為 abcdef
+   #+END_SRC
    
    有時候我們會想要將在變數後面加上新的值而不想覆蓋原本的值，
    這時候可以用 =+== ，
@@ -184,6 +193,45 @@
        ${CXX} ${CXXFLAGS} -c -o test.o test.cpp
    #+END_SRC
 ** 自動變數
+   make 支援一些特別的變數，
+   這些變數會根據規則而改變。
+   會用的話寫 makefile 會方便些，
+   但並不一定要會。
+   這裡只介紹幾個我個人常用的自動變數( 主要是因為 c++ 專案常用 )。
+
+   比較常用的就三個，分別如下
+
+   - =$@=
+
+     這個變數會展開成規則的目標。
+
+   - =$<=
+
+     這個變數會展開成規則的第一個條件。
+
+   - =$^=
+
+     這個變數會展開成規則的所有條件。
+
+   下面直接用一個例子來使用這些變數，
+   假設我們的 c++ 專案有 main.cpp, Test.h, Test.cpp 三個檔案
+
+   #+BEGIN_SRC makefile
+     CXX      := g++
+     CXXFLAGS := -std=c++11
+     LD       := g++
+     LDFLAGS  :=
+     PROG     := test
+
+     ${PROG}: main.o Test.o
+       ${LD} ${LDFLAGS} -o $@ $^ # $@ 為 test, $^ 為 main.o Test.o
+
+     main.o: main.cpp
+       ${CXX} ${CXXFLAGS} -o $@ $< # $@ 為 main.o, $< 為 main.cpp
+
+     Test.o: Test.cpp Test.h
+       ${CXX} ${CXXFLAGS} -o $@ $< # $@ 為 Test.o, $< 為 Test.cpp
+   #+END_SRC
 * 函數
 * 其他好用功能
 * 實例: 自動產生 c++ 原始碼條件
