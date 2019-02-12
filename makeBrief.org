@@ -266,4 +266,26 @@
       variable := $(shell echo abc) # variable 為 abc
     #+END_SRC
 * 其他好用功能
+** pattern rule
+   我們可以在 makefile 中利用匹配的方式來描述一些規則，
+   比如我們在編譯 c++ 原始碼時，通常會將 .cpp 編譯成 .o 檔。
+   這可以用下面的 pattern rule 描述
+
+   #+BEGIN_SRC makefile
+     %.o: %.cpp
+       g++ -c -o $@ $<
+   #+END_SRC
+   
+   其中 =%= 是匹配符號，
+   如果 test.o 為目標或是條件，
+   那 makefile 就會自動有以下規則存在
+
+   #+BEGIN_SRC makefile
+     test.o: test.cpp
+       g++ -c -o $@ $<
+   #+END_SRC
+   
+   這在處理大量類似規則時會很方便。
+** 隱式規則
+** 包含其他檔案
 * 實例: 自動產生 c++ 原始碼條件
