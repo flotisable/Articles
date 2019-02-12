@@ -332,4 +332,67 @@
      main.o: main.cpp
        ${CXX} ${CXXFLAGS} -c -o $@ $<
    #+END_SRC
-* 實例: 自動產生 c++ 原始碼條件
+* 實例: 自動產生 c++ 原始碼規則
+  #+BEGIN_SRC makefile -n -r
+    CXX      := g++
+    CXXFLAGS := -std=c++11
+    LD       := g++
+    LDFLAGS  :=
+    PROG     := test
+
+    OBJS := $(subst .cpp,.o,$(wildcard *.cpp))									#(ref:objs)
+
+    ${PROG}: ${OBJS}																						#(ref:program)
+      ${LD} ${LDFLAGS} -o $@ $^
+
+    -include $(subst .o,.d,${OBJS})															#(ref:include)
+
+    %.o: %.d																										#(ref:o-dep-d)
+
+    %.d: %.cpp
+      ${CXX} ${CXXFLAGS} -MM -MT '$(subst .d,.o,$@) $@' $< > $@	#(ref:dep)
+  #+END_SRC
+
+  這個自動產生規則的 makefile 是根據 gnu make info 文件的介紹，
+  然後我再稍微調整成自己喜歡的格式寫成的。
+
+  第 [[(objs)]] 行取得 makefile 所在的資料夾中所有的 .cpp 檔，
+  並將這些檔案對應的 .o 檔名稱產生出來。
+  第 [[(program)]] 行就只是一般程式編譯的規則。
+  第 [[(include)]] 行則根據 .o 檔將對應的 .d 檔包含進來。
+  前面加上 =-= 是因為第一次編譯時 .d 檔不存在，
+  這時候 include 會報錯，
+  加了 =-= 會讓 make 忽略錯誤繼續執行。
+  因為當一個 .o 檔的條件改變時( 比如 .cpp 檔 include 新的標頭檔 )，
+  就應該重新編譯，所以加上了第 [[(o-dep-d)]] 的 pattern rule。
+  最後當原始檔改變時有可能要更新 .o 檔的條件，
+  所以加上 .d 與 .cpp 的 pattern rule。
+  並用第 [[(dep)]] 行的指令產生 .d 檔。
+
+  這裡要額外說明幾點，
+  首先是第 [[(dep)]] 行的指令。
+  g++ 加上 =-MM= 參數後會分析原始碼並產生 makefile 的規則。
+  而 =-MT= 可以將規則的目標改成指定的目標，
+  在這裡是從原本的只有 .o 檔改成 .o 與 .d。
+  產生的規則會被儲存到 .d 檔。
+  這裡應用了 gnu make 的一個特性，
+  當被 include 的檔產生改變時，
+  make 會自動重新 make 同樣的目標。
+  這使得 .d 檔被產生後，
+  make 會根據新加的條件重新編譯程式。
+  同時這裡還利用了隱式規則，
+  gnu make 有一條隱式規則可以簡化看成是
+
+  #+BEGIN_SRC makefile
+    %.o: %.cpp
+      ${CXX} ${CXXFLAGS} -c -o $@ $<
+  #+END_SRC
+  
+  所以只要設定好變數，產生好條件，
+  不用寫步驟也能執行( 雖然也沒差幾行 )。
+
+  我曾經想過產生 .d 檔感覺資料夾會很亂，
+  而也在書上看人講過不用產生 .d 檔自動產生條件的方法。
+  但關於這點，曾有人探討過如何寫執行速度快的 makefile，
+  裡面提到產生 .d 檔速度會比較快( 基本上就是用空間換取時間 )。
+  詳情可以看 [[http://aegis.sourceforge.net/auug97.pdf][Recursive Make Considered Harmful]] 。
