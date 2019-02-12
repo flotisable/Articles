@@ -29,7 +29,100 @@
   
   make 程式有不同變體，
   在這篇文章中，我只會介紹 [[https://www.gnu.org/software/make][GNU make]] 這個我比較熟悉的 make。
+  至於例子，因為我比較習慣用在 c++ 專案中，
+  所以會以 c++ 編譯的例子為主。
 * 基本使用
+  就像前面提過的，makefile 中主要是描述一些規則( rule )。
+  每個規則都是由下列三個項目所組成
+
+  - 目標( target )
+
+    要被產生的檔案。
+
+  - 條件( prerequisite )
+
+    可以是檔案或是其他目標。
+    條件可以是空的。
+
+  - 步驟( recipe )
+
+    基本上是 shell 中的指令。
+    
+  其語法為
+
+  #+BEGIN_SRC makefile
+    target: prerequisite
+      recipe
+  #+END_SRC
+  
+  這個規則所描述的是：
+  當 *目標* 不存在，或是當 *條件* 發生改變時，
+  就根據 *步驟* 來產生 *目標* 。
+  
+  在 c++ 中常見的例子是一個目的檔在原始檔被修改後要重新編譯，
+  假設原始碼名稱為 test.cpp，
+  在 makefile 中可以寫成
+  
+  #+BEGIN_SRC makefile
+    test.o: test.cpp
+      g++ -c -o test.cpp
+  #+END_SRC
+  
+  這樣子當 test.o 不存在或是 test.cpp 被修改後，
+  make 就會根據所寫的步驟重新編譯出 test.o。
+  值得一提的是，每個步驟必須由 tab 做開頭，
+  不能是空白或是其他字元，一定要是 tab 才行。
+  雖然有辦法對這個做設定，在這不在本篇文章所涵蓋的範圍。
+  另外就是，步驟中所描述的指令預設會用系統的 shell 作執行，
+  而每一行指令會是用不同的子行程做執行( 也就是各自獨立的意思 )，
+  當然這也可以做設定。
+
+  如果一行中所要描述的指令太長的話，
+  可以用 =\= 來連接兩行作為一行，如以下例子
+
+  #+BEGIN_SRC makefile
+    test.o: test.cpp
+      g++ -std=c++11 -O2 -c \
+      -o test.cpp
+  #+END_SRC
+  
+  而如果想要寫一些註解的話， =#= 後到該行結束為止都會是註解
+
+  #+BEGIN_SRC makefile
+    test.o: test.cpp # 這是註解
+      g++ -c -o test.cpp # compile test.o
+  #+END_SRC
+  
+  當一份 makefile 裡有多條規則時，預設會只執行第一條規則。
+  可以藉由在參數指令目標來選擇要執行的規則。
+  不如我們有以下 makefile
+
+  #+BEGIN_SRC makefile
+    program: test.o
+      g++ -o program test.o
+
+    test.o: test.cpp
+      g++ -c -o test.o test.cpp
+  #+END_SRC
+  
+  如果直接執行 make，make 會根據第一條規則看要不要產生 program。
+  而我們可以在參數加上 test.o 來指定說要執行第二條規則。
+
+  #+BEGIN_SRC sh
+    make test.o
+  #+END_SRC
+  
+  順帶一提，
+  如果一條規則的條件是另一條規則的目標的話，
+  則 make 會先去執行另一條規則，
+  在執行原本的規則。
+  以上面 makefile 為例，
+  在執行 program 這條規則前。
+  因為 test.o 是另一條規則的目標，
+  所以會先看 test.o 存不存在以及 test.cpp 有沒有被修改，
+  來判斷要不要重新編譯 test.o。
+  然後再看 test.o 有沒有修改來判斷要不要重新編譯 program。
+
 * 變數
 * 函數
 * 其他好用功能
