@@ -124,6 +124,66 @@
   然後再看 test.o 有沒有修改來判斷要不要重新編譯 program。
 
 * 變數
+** 一般變數
+   有時候我們會想要修改 makefile 的一些部份，
+   比如說要修改要編譯的程式名稱。
+   或是想要重複使用同樣的指令片段，
+   比如說編譯 c++ 原始碼的參數都一樣。
+   這時候就可以使用變數。
+   在設定變數時常用有兩種方式，
+   利用 === 或 =:== 。
+   這兩種方式的差別在於，
+   用 =:== 設定會展開變數，
+   而 === 則是變數被使用時才展開。
+   比如
+
+   #+BEGIN_SRC makefile
+     flag  := -std=c++11
+     flag1 =  ${flag} # flag1 為 ${flag}
+     flag2 := ${flag} # flag2 為 -std=c++11
+
+     test.o: test.cpp
+       g++ ${flag1} -c -o test.o test.cpp # flag1 展開成 -std=c++11
+   #+END_SRC
+   
+   我個人習慣用 =:== ，
+   主要是因為使用變數時才展開變數理論上執行速度會比較慢，
+   尤其是變數被大量使用時影響會比較大。
+   不過 === 應該也有適用的地方，
+   但我就不熟悉了。
+   使用變數的方式也有兩種方式，
+   一個是用 =$(= =)= 來包住變數，
+   一個是用 =${= =}= 來包住變數。
+   而這兩種方式基本上沒差。
+   我個人習慣用 =${= =}= ，
+   主要是可以跟後面介紹的函示作區別。
+   
+   有時候我們會想要將在變數後面加上新的值而不想覆蓋原本的值，
+   這時候可以用 =+== ，
+   比如
+
+   #+BEGIN_SRC makefile
+     variable1 := abc
+     variable1 += def # variable1 為 abc def
+   #+END_SRC
+   
+   有些常用的變數或是環境變數習慣上會用全部大寫表示，
+   下面為一個使用例子
+
+   #+BEGIN_SRC makefile
+     CXX      := g++
+     CXXFLAGS := -std=c++11
+     LD       := g++
+     LDFLAGS  :=
+     PROG     := test
+
+     ${PROG}: test.o
+       ${LD} ${LDFLAGS} -o ${PROG} test.o
+
+     test.o: test.cpp
+       ${CXX} ${CXXFLAGS} -c -o test.o test.cpp
+   #+END_SRC
+** 自動變數
 * 函數
 * 其他好用功能
 * 實例: 自動產生 c++ 原始碼條件
