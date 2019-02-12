@@ -287,5 +287,49 @@
    
    這在處理大量類似規則時會很方便。
 ** 隱式規則
+   make 程式其實偷偷提供了一些常用的規則，
+   如果知道的話在撰寫 makefile 時可以精簡一些。
+   這些隱式規則基本上都是以 pattern rule 的方式存在。
+   在 gnu make，可以用 =-p= 參數來顯示預設的隱式規則。
 ** 包含其他檔案
+   有時候將所有的規則寫在一份 makefile 的話，
+   整份 makefile 可能會勒勒登。
+   我們可以將 makefile 分割，
+   再用 *include* 這個關鍵字將檔案包進來。
+
+   #+CAPTION: settings
+   #+BEGIN_SRC makefile
+     CXX      := g++
+     CXXFLAGS := -std=c++11
+     LD       := g++
+     LDFLAGS  :=
+     PROG     := test
+   #+END_SRC
+
+   #+CAPTION: makefile
+   #+BEGIN_SRC makefile
+     include settings
+
+     ${PROG}: main.o
+       ${LD} ${LDFLAGS} -o $@ $^
+
+     main.o: main.cpp
+       ${CXX} ${CXXFLAGS} -c -o $@ $<
+   #+END_SRC
+   
+   這等同於
+
+   #+BEGIN_SRC makefile
+     CXX      := g++
+     CXXFLAGS := -std=c++11
+     LD       := g++
+     LDFLAGS  :=
+     PROG     := test
+
+     ${PROG}: main.o
+       ${LD} ${LDFLAGS} -o $@ $^
+
+     main.o: main.cpp
+       ${CXX} ${CXXFLAGS} -c -o $@ $<
+   #+END_SRC
 * 實例: 自動產生 c++ 原始碼條件
