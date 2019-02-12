@@ -233,5 +233,37 @@
        ${CXX} ${CXXFLAGS} -o $@ $< # $@ 為 Test.o, $< 為 Test.cpp
    #+END_SRC
 * 函數
+  make 提供了一些函數方便做文字的處理，
+  這裡一樣只介紹幾個常用的，
+  其他需要用的時候再查詢即可。
+  而函式的呼叫方式是用 =$(= =)= 將函式的名稱與參數包起來。
+  以下採用 gnu make info 文件的函式格式。
+
+  - $(subst FROM,To,TEXT)
+
+    這個函式會將 TEXT 中的 FROM 取代成 TO。
+    比如
+
+    #+BEGIN_SRC makefile
+      SRCS := main.cpp test.cpp
+      OBJS := $(subst .cpp,.o,${SRCS})  # OBJS 為 main.o test.o
+    #+END_SRC
+    
+  - $(wildcard PATTERN)
+
+    可以使用一些 shell 常用的 wildcard 來得到檔案名稱。
+    假設我們的資料夾下有 main.cpp, test.cpp
+
+    #+BEGIN_SRC makefile
+      SRCS :=$(wildcard *.cpp) # SRCS 為 main.cpp test.cpp
+    #+END_SRC
+    
+  - $(shell COMMAND)
+
+    用 shell 執行 COMMAND，並傳回結果。
+
+    #+BEGIN_SRC makefile
+      variable := $(shell echo abc) # variable 為 abc
+    #+END_SRC
 * 其他好用功能
 * 實例: 自動產生 c++ 原始碼條件
