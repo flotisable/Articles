@@ -1,0 +1,36 @@
+#+TITLE: Makefile 簡介
+#+AUTHOR: Flotisable
+#+DATE: <2019-02-12 週二>
+#+OPTIONS: toc:nil creator:t num:nil
+#+LATEX_HEADER: \usepackage{CJKutf8}
+#+LATEX_HEADER: \AtBeginDocument{ \begin{CJK}{UTF8}{bkai} }
+#+LATEX_HEADER: \AtEndDocument{ \clearpage \end{CJK} }
+
+#+LATEX: \newpage
+
+有鑑於實驗室有些同學跟學弟不知道怎麼用 makefile，
+因為個人覺得很好用，
+所以就雞婆的想來介紹一下。
+-----
+* Makefile 是什麼
+  makefile 是對 make 這種程式所讀取的檔案的統稱，
+  常被用於程式建置( build )的自動化。
+  但 makefile 並不只能用在程式原始碼上，
+  就算是一般的檔案也沒問題。
+  make 程式本質上是依據 makefile 所描述的規則，
+  對於一個 *目標* 在 *什麼條件* 下要 *做什麼* 。
+  所以只要需要依據一定條件做事，
+  就可以利用 makefile 做自動化。
+  比如說，我們在寫完一份報告後，
+  要將報告相關的檔案壓成 zip 檔。
+  那麼這個 zip 檔就是我們的目標，
+  而條件就是報告被修改，
+  要做的事就是壓縮檔案。
+  
+  make 程式有不同變體，
+  在這篇文章中，我只會介紹 [[https://www.gnu.org/software/make][GNU make]] 這個我比較熟悉的 make。
+* 基本使用
+* 變數
+* 函數
+* 其他好用功能
+* 實例: 自動產生 c++ 原始碼條件
