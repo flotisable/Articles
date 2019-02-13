@@ -332,6 +332,24 @@
      main.o: main.cpp
        ${CXX} ${CXXFLAGS} -c -o $@ $<
    #+END_SRC
+** 假目標( Phony Target )
+   有些時候，我們並不想要產生目標檔案，
+   比如常見的 clean 目標 ，
+   這個目標純粹是方便使用並不想產生 clean 這個檔案。
+   或是就算檔案存在我們仍想要更新目標檔案。
+   我們可以在 makefile 中加入 =.PHONY= 關鍵字來完成這些事。
+
+   #+BEGIN_SRC makefile
+     .PHONY: clean
+
+     clean:
+       rm *.o
+   #+END_SRC
+
+   =.PHONY= 會告訴 make 那些目標是假目標，
+   不會產生目標檔案，
+   所以不管目標檔案存不存在都會執行步驟的部分。
+
 * 實例: 自動產生 c++ 原始碼規則
   #+BEGIN_SRC makefile -n -r
     CXX      := g++
