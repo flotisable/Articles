@@ -349,7 +349,45 @@
    =.PHONY= 會告訴 make 那些目標是假目標，
    不會產生目標檔案，
    所以不管目標檔案存不存在都會執行步驟的部分。
+   這讓我們比較容易將 make 所要做的事切割成更小部分。
+   比如說我們想用 make 預設目標來做到編譯程式、產生文檔和做單元測試，
+   我們可以將預設目標切成幾個小目標，其中可以用假目標做分類。
 
+   #+BEGIN_SRC makefile
+     all: program docs unit-test
+
+     program:
+     # 編譯程式
+
+     docs:
+     # 產生文檔
+
+     unit-test:
+     # 做單元測試
+   #+END_SRC
+   
+   順帶一題，
+   習慣上會用 all 作為 make 的預設目標。
+
+** 根據目標設定變數
+   很多時候我們會想要根據要產生的目標對變數做一些修改，
+   比如我們想依照 release 和 debug 目標設定不一樣的 CXXFLAGS。
+   可以用下面的寫法
+
+   #+BEGIN_SRC makefile
+     CXXFLAGS := -std=c++11
+
+     release: CXXFLAGS += -DNDEBUG -O2
+     release:
+     # 編譯程式
+
+     debug: CXXFLAGS += -g -Wall
+     debug:
+     # 編譯程式
+   #+END_SRC
+   
+   也就是在原本寫條件的部分改成寫變數的設定。
+   要注意的是這跟一般的規則要分開來寫。
 * 實例: 自動產生 c++ 原始碼規則
   #+BEGIN_SRC makefile -n -r
     CXX      := g++
