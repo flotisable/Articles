@@ -1,6 +1,6 @@
 #+TITLE: Makefile 簡介
 #+AUTHOR: Flotisable
-#+DATE: <2019-02-12 週二>
+#+DATE: <2019-02-13 週三>
 #+OPTIONS: toc:nil creator:t num:nil
 #+LATEX_HEADER: \usepackage{CJKutf8}
 #+LATEX_HEADER: \AtBeginDocument{ \begin{CJK}{UTF8}{bkai} }
@@ -51,7 +51,7 @@
   其語法為
 
   #+BEGIN_SRC makefile
-    target: prerequisite
+  target: prerequisite
       recipe
   #+END_SRC
   
@@ -95,7 +95,7 @@
   
   當一份 makefile 裡有多條規則時，預設會只執行第一條規則。
   可以藉由在參數指令目標來選擇要執行的規則。
-  不如我們有以下 makefile
+  比如我們有以下 makefile
 
   #+BEGIN_SRC makefile
     program: test.o
@@ -115,7 +115,7 @@
   順帶一提，
   如果一條規則的條件是另一條規則的目標的話，
   則 make 會先去執行另一條規則，
-  在執行原本的規則。
+  再執行原本的規則。
   以上面 makefile 為例，
   在執行 program 這條規則前。
   因為 test.o 是另一條規則的目標，
@@ -126,7 +126,8 @@
 * 變數
 ** 一般變數
    有時候我們會想要修改 makefile 的一些部份，
-   比如說要修改要編譯的程式名稱。
+   但這些部分在很多地方被用到，
+   比如說要改變編譯用的程式( gcc 改 g++ 之類的 )。
    或是想要重複使用同樣的指令片段，
    比如說編譯 c++ 原始碼的參數都一樣。
    這時候就可以使用變數。
@@ -232,8 +233,8 @@
      Test.o: Test.cpp Test.h
        ${CXX} ${CXXFLAGS} -o $@ $< # $@ 為 Test.o, $< 為 Test.cpp
    #+END_SRC
-* 函數
-  make 提供了一些函數方便做文字的處理，
+* 函式
+  make 提供了一些函式方便做文字的處理，
   這裡一樣只介紹幾個常用的，
   其他需要用的時候再查詢即可。
   而函式的呼叫方式是用 =$(= =)= 將函式的名稱與參數包起來。
@@ -452,3 +453,12 @@
   但關於這點，曾有人探討過如何寫執行速度快的 makefile，
   裡面提到產生 .d 檔速度會比較快( 基本上就是用空間換取時間 )。
   詳情可以看 [[http://aegis.sourceforge.net/auug97.pdf][Recursive Make Considered Harmful]] 。
+* 小結
+  我是盡量將我覺得 makefile 好用的部分做個簡單的介紹，
+  希望能讓大家稍微了解一下。
+  但 makefile 本身還有很多花樣可以玩，
+  有興趣可以再自行研究。
+  學會寫 makefile 的話，
+  在自動化上面可以有不錯的幫助。
+  也可以將很多事統一用 make 來做到，
+  個人是覺得很方便啦。
