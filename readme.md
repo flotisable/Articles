@@ -17,5 +17,6 @@
    - 關於 verilog 設計的電路 [pdf](https://github.com/flotisable/Articles/files/2290061/verilogCircuitDesign.pdf)
    - 我所知道的 EDA
    - 想來紀錄自己用過的 IDE 與文字編輯器
+   - makefile 簡介 [pdf](https://github.com/flotisable/Articles/files/2858550/makeBrief.pdf)
 ## 作者
    flotisable s09930698@gmail.com
