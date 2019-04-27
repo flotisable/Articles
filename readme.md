@@ -14,14 +14,19 @@
 ## 目前文章列表
    - git 簡介
     [pdf](https://github.com/flotisable/Articles/files/2260281/gitBrief.pdf)
+    [epub](https://github.com/flotisable/Articles/releases/download/v0.5.0/gitBrief.epub)
    - git 簡介 GUI 版
     [pdf](https://github.com/flotisable/Articles/files/2260282/gitBriefGui.pdf)
    - 關於 verilog 設計的電路
     [pdf](https://github.com/flotisable/Articles/files/2290061/verilogCircuitDesign.pdf)
+    [epub](https://github.com/flotisable/Articles/releases/download/v0.5.0/verilogCircuitDesign.epub)
    - 我所知道的 EDA
    - 想來紀錄自己用過的 IDE 與文字編輯器
    - makefile 簡介
     [pdf](https://github.com/flotisable/Articles/files/2858550/makeBrief.pdf)
+    [epub](https://github.com/flotisable/Articles/releases/download/v0.5.0/makeBrief.epub)
    - emacs 簡介
+    [pdf](https://github.com/flotisable/Articles/releases/download/v0.5.0/emacsbrief.pdf)
+    [epub](https://github.com/flotisable/Articles/releases/download/v0.5.0/emacsBrief.epub)
 ## 作者
    flotisable s09930698@gmail.com
