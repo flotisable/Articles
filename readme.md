@@ -29,5 +29,7 @@
     [pdf](https://github.com/flotisable/Articles/releases/download/v0.5.0/emacsbrief.pdf)
     [epub](https://github.com/flotisable/Articles/releases/download/v0.5.0/emacsBrief.epub)
    - latex 簡介
+    [pdf](https://github.com/flotisable/Articles/releases/download/v0.6.0/latexBrief.pdf)
+    [epub](https://github.com/flotisable/Articles/releases/download/v0.6.0/latexBrief.epub)
 ## 作者
    flotisable s09930698@gmail.com
